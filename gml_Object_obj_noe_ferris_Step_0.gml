@@ -248,10 +248,11 @@ if (con == 4)
     c_sel(no);
     c_sprite(spr_noelle_sit_lean_old); // lean_neutral but smiling
     c_wait(55);
+    
     c_sprite(spr_noelle_sit_laugh);
     c_addxy(0, noe_spr_offset2_y);
     c_imagespeed(0.20); // 6fps
-    c_wait(15); // = 3 frames (1.5 laugh loops)
+    c_wait(15); // = 3 sprite frames (1.5 laugh loops)
 
     c_speaker("noelle");
     c_msgset(0, "\\E3* ...Gosh^1, you're such a weirdo./");
@@ -379,7 +380,7 @@ if (con == 4)
     // kris start scooting away
     c_sel(kr);
     // can't use current kr_actor.x since it unflips above
-    c_var_lerp("x", kris_marker.x + kris_scoot, kris_marker.x, 120, 4, "in");
+    c_var_lerp("x", kris_marker.x + kris_scoot, kris_marker.x, 120, 1, "in");
     c_wait(30);
     
     c_sel(no);
@@ -417,22 +418,21 @@ if (con == 4)
     c_talk();
     c_waittalk();
 
-    c_wait(20);
+    c_wait(60);
     c_sel(no);
     c_sprite(spr_noelle_sit_look_down_unhappy);
     c_addxy(0, -noe_spr_offset2_y);
-    c_wait(40);
+    // c_wait(40);
 
     c_msgset(0, "\\Ed* (Sigh...)/%");
     c_talk();
     c_waittalk();
     
     c_wait(30);
-    
-    var heart_move_up = 8; // TODO(visuals): 6 if her hand can be layered over the heart
+    var heart_move_hold = -7; // TODO(visuals): can be lower if her hand can be layered over the heart
     c_sel(hrt);
     c_stickto_stop();
-    c_addxy(0, -heart_move_up);
+    c_addxy(0, heart_move_hold);
     c_depthobject(no_actor, -1);
 
     c_sel(no);
@@ -565,12 +565,123 @@ if (con == 4)
     // c_sel(hrt);
     // c_var_lerp("image_alpha", 1, 0, 120);
     c_wait(150);
-    c_mus("free_all");
-
+    c_mus("free");
+    
+    var scoot_nudge = -5; // sprite has offset
+    // it also has the 1-pixel y-offset but honestly it looks fine
+    
+    c_sel(no);
+    c_sprite(spr_noelle_sit_nudge);
+    c_addxy(-scoot_nudge, 0);
+    c_imageindex(5);
+    c_sel(hrt);
+    c_addxy(0, -heart_move_hold);
+    c_stickto(no_actor, -1); // sit_nudge changes depth for some reason (at least i think it does, the heart just disappears)
+    
+    c_sel(no);
+    c_fadein(120);
+    c_wait(60);
+    c_imageindex(4);
+    c_wait(60);
+    c_imageindex(3);
+    c_wait(45);
+    c_imageindex(1);
+    c_wait(70);
+    c_imageindex(0);
+    
+    c_wait(90);
+    
+    c_sel(hrt);
+    c_stickto_stop();
+    // c_addxy(-scoot_nudge, 0);
+    c_sel(no);
+    c_sprite(spr_noelle_sit_cover_mouth_steal_car_eyes_closed); // spr_girlwhostealsyourcarwhenyouknowherfortoolong
+    c_addxy(scoot_nudge, 0);
+    c_speaker("noelle");
+    c_msgset(0, "\\E5* Ahem./%");
+    c_talk_wait();
+    
+    c_wait(60);
+    c_mus2("initloop", "noelle_school.ogg", 0);
+    c_sel(no);
+    c_sprite(spr_noelle_sit_laugh);
+    c_addxy(0, noe_spr_offset2_y);
+    
+    var noe_give_heart = { x: -15, y: -5 };
+    var noe_give_heart_2 = { x: -2, y: -1 };
+    var noe_give_to_ganbatte_hold_heart_moves_this_much = { x: 5, y: -4 };
+    c_msgset(0, "\\E9* Sorry, Kris^1, I talked your ear off, didn't I?/");
+    c_msgnext("\\E4* Here^1, you can have this back./%");
+    c_talk();
+    c_wait_box(1);
+    c_sprite(spr_noelle_sit_reaching);
+    c_addxy(0, -noe_spr_offset2_y);
+    c_imageindex(1);
+    c_sel(hrt);
+    c_addxy(noe_give_heart.x, noe_give_heart.y);
+    // c_depthobject(no_actor, 1); // behind her hand
+    c_depthobject(no_actor, -1); // it looked worse :(
+    c_wait_talk();
+    
     c_sel(kr);
     c_sprite(spr_kris_sit_look);
+    c_wait(60);
+    c_sel(no); c_imageindex(2);
+    c_sel(hrt); c_addxy(noe_give_heart_2.x, noe_give_heart_2.y);
+    c_wait(10);
+    c_sel(no); c_imageindex(1);
+    c_sel(hrt); c_addxy(-noe_give_heart_2.x, -noe_give_heart_2.y);
+    c_wait(20);
+    c_sel(no); c_imageindex(2);
+    c_sel(hrt); c_addxy(noe_give_heart_2.x, noe_give_heart_2.y);
+    c_wait(10);
+    c_sel(no); c_imageindex(1);
+    c_sel(hrt); c_addxy(-noe_give_heart_2.x, -noe_give_heart_2.y);
+    c_wait(50);
+    c_sel(kr);
+    c_sprite(spr_kris_sit);
+    c_wait(30);
 
-    c_fadein(120);
+    c_sel(no); c_imageindex(2);
+    c_sel(hrt); c_addxy(noe_give_heart_2.x, noe_give_heart_2.y);
+    c_msgset(0, "\\E4* Oh^1, Kriiismaaas.../%");
+    c_talk_wait();
+
+    c_wait(80);
+
+    c_msgset(0, "\\E2* Kris^1, take it back^1, I don't want it./");
+    c_msgnext("\\E8* What^3? No^1, I'm not raising it as a pet./");
+    c_msgnext("\\EQ* ...What^4? No^1, I'm not raising you either!/");
+    c_msgnext("\\E8* ..^3. You can stop making those puppy dog eyes now./");
+    c_msgnext("\\ER* ...That means stop whining^1, too!/%");
+    c_talk();
+    c_wait_box(1);
+    c_sel(kr);
+    c_flip("x");
+    c_sel(no); c_imageindex(1);
+    c_sel(hrt); c_addxy(-noe_give_heart_2.x, -noe_give_heart_2.y);
+    c_wait_box(2);
+    c_sel(no);
+    c_sprite(spr_noelle_sit_ganbatte);
+    c_sel(hrt);
+    c_depthobject(no_actor, -1);
+    c_addxy(noe_give_to_ganbatte_hold_heart_moves_this_much.x, noe_give_to_ganbatte_hold_heart_moves_this_much.y);
+    c_wait_box(3);
+    c_sel(no);
+    c_sprite(spr_noelle_sit_reaching);
+    c_imageindex(1);
+    c_sel(hrt);
+    // c_depthobject(no_actor, 1);
+    c_addxy(-noe_give_to_ganbatte_hold_heart_moves_this_much.x, -noe_give_to_ganbatte_hold_heart_moves_this_much.y);
+    c_wait_box(4);
+    c_sel(no); c_imageindex(2);
+    c_sel(hrt); c_addxy(noe_give_heart_2.x, noe_give_heart_2.y);
+    c_wait_talk();
+
+    c_mus2("volume", 0, 60);
+    c_fadeout(60);
+    c_wait(60);
+    
     c_wait(120);
     
     // done
