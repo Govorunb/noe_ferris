@@ -33,7 +33,7 @@ if (con == 1)
     c_mus2("loopsfxpitch", 0, 0);
     c_mus2("loopsfxpitchtime", 0.7, 1);
     c_mus2("loopsfxvolume", 0, 0);
-    c_mus2("loopsfxvolume", 0.3, 30);
+    c_mus2("loopsfxvolume", 0.4, 30);
     c_sel(kr);
     c_autowalk(0);
     c_setxy(kris_marker.x, kris_marker.y);
@@ -114,12 +114,13 @@ if (con == 4)
     c_speaker("noelle");
     c_msgset(0, "\\E8* Fahaha^1, you don't sound so sure!/");
     c_msgnext("\\E9* (But^1, they also sounded kind of..^3. sincere?)/");
+    // TODO: jarring sprite jank with noelle's hair between these lines (insert a pause)
     c_msgnext("\\Ed* To tell you the truth^1, I.../");
     c_msgnext("\\Ee* Also don't remember much./");
     c_msgnext("\\Em* All I remember is..^2. shaking.../");
     c_msgnext("\\En* That awful^2, awful creaking.../");
     c_msgnext("\\Ee* And..^2. afterwards^1, on the ground,/");
-    c_msgnext("\\Ed* Dess picking me up and carrying me away./%");
+    c_msgnext("\\Ed* Dad picking me up and carrying me away./%");
     c_talk();
     c_wait_box(2);
     c_sel(no);
@@ -139,7 +140,7 @@ if (con == 4)
     c_wait(25);
 
     c_speaker("noelle");
-    c_msgset(0, "\\Eb* I remember looking back at you from behind Dess's shoulder.../");
+    c_msgset(0, "\\Eb* I remember looking back at you from behind Dad's shoulder.../");
     c_msgnext("\\Ea* I couldn't read your face at all^1, haha./");
     c_msgnext("\\Ec* Ever since then^1, rarely I feel like.../");
     c_msgnext("\\Ee* Like I could never fully understand you^1, no matter how hard I tried./");
@@ -172,20 +173,26 @@ if (con == 4)
     c_sprite(spr_noelle_sit_lean_neutral);
     c_msgset(0, "\\E2* ...huh?/");
     c_msgnext("\\ED* You want to..^2. show me something?/"); // lean left look at cam
-    c_msgnext("\\E3* It's not gonna be a dead bug again^1, is it?/");
+    c_msgnext("\\E3* It's not gonna be some weird bug again^1, is it?/");
+    // deep fanon lore
+    c_msgnext("\\Eh* Like that time you brought me a dead centipede.../");
+    c_msgnext("\\Eg* Well, I guess... you THOUGHT it was dead./");
+    c_msgnext("\\Ei* Because then it crawled up my arm and into my hair!/");
     c_msgnext("\\E8* You know^1, fool me thrice^1, shame on me^1, but fool me quice-/%");
     c_talk();
     // c_wait_box(1);
     // c_sel(no);
     // c_sprite(spr_noelle_sit_lean_normal);
     c_wait_box(2);
-    c_sel(no);
     c_sprite(spr_noelle_sit_cover_mouth_look);
     // c_sprite(spr_noelle_sit_lean_normal);
     // c_sprite(spr_noelle_sit_cover_mouth_steal_car); // STEAL CAR????
     c_wait_box(3);
-    c_sel(no);
     // c_sprite(spr_noelle_sit_lean_look);
+    c_sprite(spr_noelle_sit_cover_mouth_steal_car_eyes_closed);
+    c_wait_box(4);
+    c_sprite(spr_noelle_sit_cover_mouth_steal_car);
+    c_wait_box(6);
     c_sprite(spr_noelle_sit_cover_mouth_steal_car_eyes_closed);
     c_waittalk();
 
@@ -274,7 +281,7 @@ if (con == 4)
     c_imagespeed(0);
     c_sel(kr);
     c_shakeobj();
-    c_soundplay_x(snd_grab, 0.5, 1.5);
+    c_soundplay_x(snd_grab, 0.5, 1.3);
     
     c_speaker("noelle");
     c_msgset(0, "\\ED* Kris..^3. Your voice...!/");
@@ -282,32 +289,34 @@ if (con == 4)
     c_msgnext("\\EI* ...??^4? 'Not you'?^4!&Kris^1, who else...?/");
     c_msgnext("\\EH* ..^2. Just repeat it back..^2. out loud^3? Okay.../%");
     c_talk();
+    
     c_wait_box(1);
     c_sel(no);
     c_imagespeed(0);
     c_sprite(spr_noelle_sit_awkward);
+    
+    var weird_sprite_offset = 5; // some noe sprites have weird offsets
     c_wait_box(2);
-    c_sprite(spr_noelle_sit_expressions);
-    c_imageindex(6);
-    c_addxy(-noe_scoot, 0); // this sprite has some weird offset
     c_sel(hrt);
     c_stickto_stop(); // stickto keeps its relative offsets so need to do it manually
-    c_depth(-9999);
-    // c_addxy(-noe_scoot, 0);
-    // c_stickto(no_actor, -1); // restick (otherwise something else sets this thing's depth and it sucks)
+    c_depth(-9999); // it also restores previous depth
+    c_sel(no);
+    c_sprite(spr_noelle_sit_expressions);
+    c_imageindex(6);
+    c_addxy(weird_sprite_offset, 0);
+    
     c_wait_box(3);
     c_sel(no);
     c_imageindex(1); // face left look right
     // c_imageindex(21); // face forward look DL cover mouth
     c_waittalk();
     
-    // pause noe breathe in/out (or close/open eyes)
+    // pause noe
     c_wait(20);
     c_sel(no);
     c_sprite(spr_noelle_sit_look_down_eyes_closed);
+    c_addxy(-weird_sprite_offset, 0);
     c_imageindex(0);
-    c_addxy(noe_scoot, 0);
-    c_sel(hrt);
     
     c_speaker("noelle");
     c_msgset(0, "\\E5* 'Don't move^1, or you'll cancel it.'/");
@@ -320,8 +329,8 @@ if (con == 4)
 
     // kris start scooting away
     c_sel(kr);
-    // can't use kr_actor since it's currently flipped
-    c_var_lerp("x", kris_marker.x + kris_scoot, kris_marker.x, 120, 2, "in");
+    // can't use current kr_actor.x since it unflips above
+    c_var_lerp("x", kris_marker.x + kris_scoot, kris_marker.x, 120, 4, "in");
     c_wait(30);
     
     c_sel(no);
@@ -337,7 +346,7 @@ if (con == 4)
     c_sel(no);
     c_sprite(spr_noelle_sit_strangleface_forward);
     c_imageindex(0);
-    c_addxy(-noe_scoot, 0); // weird sprite offset again
+    c_addxy(weird_sprite_offset, 0);
     c_msgset(0, "\\EH* C'mon^1, what's with you...?/%");
     c_talk();
     c_wait(25);
@@ -352,7 +361,7 @@ if (con == 4)
     // noe look cam
     c_sel(no);
     c_sprite(spr_noelle_sit_laugh_goofy_left);
-    c_addxy(noe_scoot, 0);
+    c_addxy(-weird_sprite_offset, 0);
     c_msgset(0, "\\EI* (..^2. Is this a human thing?????)/%");
     c_talk();
     c_waittalk();
@@ -368,7 +377,7 @@ if (con == 4)
     
     c_wait(30);
     
-    var heart_move_up = 8; // TODO: 6 if her hand can be layered over the heart
+    var heart_move_up = 8; // TODO(visuals): 6 if her hand can be layered over the heart
     c_sel(hrt);
     c_stickto_stop();
     c_addxy(0, -heart_move_up);
@@ -381,18 +390,18 @@ if (con == 4)
     
     
     // close eyes
-    c_mus2("loopsfxvolume", 0.1, 60);
+    c_mus2("loopsfxvolume", 0.2, 60);
     
-    // heart should fade slightly slower to remain on screen for a bit longer
+    // TODO(visuals): heart fades slightly slower to remain on screen for a bit longer
     // c_sel(hrt);
     // c_depth(-9999);
-    // c_var_lerp("color_blend", 16777215, 0, 90); // doesn't work (flickers red/black)
-    // c_var_lerp("image_alpha", 1, 0, 90); // look bad
+    // c_var_lerp("color_blend", 16777215, 0, 90); // doesn't work (flickers red/black because it goes FFFFFF -> FF0000 -> FEFFFF -> etc)
+    // c_var_lerp("image_alpha", 1, 0, 90); // seethrough; fixable with a second heart sprite underneath i guess but that's so jank
     
     c_fadeout(60);
     c_wait(60);
     
-    // TODO: hand sprite over heart
+    // TODO(visuals): hand sprite over heart
     
     // heart over black screen
     // c_sel(hrt);
@@ -427,7 +436,8 @@ if (con == 4)
     c_msgnext("* But^1, I..^3. I couldn't stop^1, thinking that./%");
     c_talk();
     c_wait_box(6);
-    c_mus2("loopsfxvolume", 0.05, 60);
+    // TODO(visuals): hand wraps slightly tighter?
+    c_mus2("loopsfxvolume", 0.1, 60);
     c_mus2("volume", 0.3, 60);
     c_waittalk();
     
@@ -448,29 +458,29 @@ if (con == 4)
     c_wait(30);
     
     // "clothes rustle" sfx
-    c_soundplay_x(snd_grab, 0.075, 0.3);
+    c_soundplay_x(snd_grab, 0.1, 0.3);
     
     /*
         so the vision here was something like:
           black screen, heart faintly showing (glowing)
-            cutout like in vent segment, or (probably) a fading alpha gradient
+            cutout like in vent segment, or (probably) a transparency gradient
           noelle's hand visible in front of heart (holding it)
           then, at this point, her arms would cross over the heart into a hug
         i feel like, without the visuals, it's not exactly interpretable
         but, at the same time, i'm very much not a sprite artist
     */
-    // TODO: noe hug heart (move hand sprites)
+    // TODO(visuals): noe hug heart (move hand sprites)
     // c_sel(hand2);
     // c_depth(-10000);
     // c_var("image_alpha", 0);
     // c_var_lerp("image_alpha", 0, 1, 90);
-    // TODO: rotate and move a bit (appearance of hug-like movement)
+    // TODO(visuals): rotate and move a bit (appearance of hug-like movement)
     // c_visible(true);
     
     c_wait(30);
     c_mus2("initloop", "heartbeat.ogg", 0);
     c_mus2("volume", 0, 0);
-    c_mus2("volume", 1, 60);
+    c_mus2("volume", 0.8, 60);
     // c_mus2("volume", 1.25, 30);
     c_mus2("pitch", 1.2, 10);
 
@@ -487,9 +497,9 @@ if (con == 4)
     c_msgnext("* Who's to say that..^3. anything..^2. happened at all?/%");
     c_talk();
     c_wait_box(1);
-    // c_mus2("volume", 1, 60);
     c_waittalk();
     
+    c_mus2("volume", 1, 60);
     c_mus2("pitch", 1.3, 60);
     c_wait(60);
 
