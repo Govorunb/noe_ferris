@@ -1,5 +1,17 @@
 if (con == 1)
 {
+    /*
+    i stood up and saw. saw through the outlines.
+    saw the reflections bouncing in, around, back out.
+    the twilight, marred, scarred.
+
+    on a more serious note: dev commentary i guess
+    i was listening to one of Andrew Cunningham's ELEKTIONTRÜCKUNG streams to fall asleep, and this scene came to me in a half-dream.
+    i got up, but it didn't leave my head as it was supposed to.
+    i couldn't stop thinking about it, so i forcefully evicted it onto this canvas.
+    
+    the cutscene system is cool so this was fun.
+    */
     cutscene_master = scr_cutscene_make();
     scr_maincharacters_actors();
     global.interact = 1;
@@ -17,15 +29,15 @@ if (con == 1)
     hrt_actor.image_xscale = 0.4;
     hrt_actor.image_yscale = 0.4;
 
-    hand1 = ++actor_count;
-    hand1_actor = instance_create(197, 110, obj_actor);
-    scr_actor_setup(hand1, hand1_actor, "hand1");
-    hand1_actor.image_angle = 180;
+    // hand1 = ++actor_count;
+    // hand1_actor = instance_create(197, 110, obj_actor);
+    // scr_actor_setup(hand1, hand1_actor, "hand1");
+    // hand1_actor.image_angle = 180;
     
-    hand2 = ++actor_count;
-    hand2_actor = instance_create(193, 110, obj_actor);
-    scr_actor_setup(hand2, hand1_actor, "hand2");
-    hand2_actor.image_angle = 180;
+    // hand2 = ++actor_count;
+    // hand2_actor = instance_create(193, 110, obj_actor);
+    // scr_actor_setup(hand2, hand1_actor, "hand2");
+    // hand2_actor.image_angle = 180;
     
     var wind_sfx = snd_init("wind_highplace.ogg");
     c_mus("free"); // free_all unloads this sfx since the command is queued for later
@@ -50,35 +62,47 @@ if (con == 1)
     c_depth(no_actor.depth - 1);
     c_visible(false);
     
-    c_sel(hand1);
-    c_sprite(spr_noelle_sit_chuckle_arm);
-    c_imageindex(0);
-    c_autodepth(false);
-    c_visible(false);
+    // c_sel(hand1);
+    // c_sprite(spr_noelle_sit_chuckle_arm);
+    // c_imageindex(0);
+    // c_autodepth(false);
+    // c_visible(false);
 
-    c_sel(hand2);
-    c_sprite(spr_noelle_sit_chuckle_arm);
-    c_imageindex(1);
-    c_autodepth(false);
-    c_flip("x");
-    c_visible(false);
+    // c_sel(hand2);
+    // c_sprite(spr_noelle_sit_chuckle_arm);
+    // c_imageindex(1);
+    // c_autodepth(false);
+    // c_flip("x");
+    // c_visible(false);
     
+    c_sel(no);
+    c_autowalk(0);
+    c_sprite(spr_noelle_sit_look_down_neutral);
+
     c_fadeout(5);
     c_wait(5);
     c_fadein(30);
     c_wait(30);
     
-    c_wait(60);
+    weird_sprite_offset = 5; // some noe sprites have weird offsets
+    // TODO: there's some weird 1-pixel y-offset on some sprites too...
+    c_sprite(spr_noelle_sit_neutral);
+    c_wait(65);
+    c_sprite(spr_noelle_sit_expressions);
+    c_imageindex(1);
+    c_addxy(weird_sprite_offset, 0);
+    c_wait(45);
+    
     c_sel(no);
-    c_autowalk(0);
+    c_addxy(-weird_sprite_offset, 0);
     c_sprite(spr_noelle_sit_look_down_unhappy);
+    c_imageindex(0);
     
     c_mus2("initloop", "noelle_distant.ogg", 0);
     c_mus2("volume", 0.3, 0);
     c_mus2("volume", 0.8, 60);
     c_wait(60);
-    
-    c_wait(30);
+
     c_speaker("noelle");
     c_msgside("bottom");
     c_msgset(0, "\\EA* .../");
@@ -103,6 +127,8 @@ if (con == 2 && customcon == 1)
 {
     customcon = 0;
     c_waitcustom_end();
+    // i hate that this requires editing scr_text
+    // but i found no other easy way to sequence in a choicer that actually worked
     c_msc(10001);
     c_talk_wait();
 }
@@ -111,11 +137,21 @@ if (con == 4)
 {
     customcon = 0;
     c_waitcustom_end();
+    
+    c_sel(no);
+    c_sprite(spr_noelle_sit_look_down_left);
+
     c_speaker("noelle");
     c_msgset(0, "\\E8* Fahaha^1, you don't sound so sure!/");
-    c_msgnext("\\E9* (But^1, they also sounded kind of..^3. sincere?)/");
-    // TODO: jarring sprite jank with noelle's hair between these lines (insert a pause)
-    c_msgnext("\\Ed* To tell you the truth^1, I.../");
+    c_msgnext("\\E9* (But^1, they also sounded kind of..^3. sincere?)/%");
+    c_talk_wait();
+
+    c_wait(10);
+    c_sel(no);
+    c_sprite(spr_noelle_sit_closed_eyes_side_b);
+    c_wait(25);
+    
+    c_msgset(0, "\\Ed* To tell you the truth^1, I.../");
     c_msgnext("\\Ee* Also don't remember much./");
     c_msgnext("\\Em* All I remember is..^2. shaking.../");
     c_msgnext("\\En* That awful^2, awful creaking.../");
@@ -123,13 +159,12 @@ if (con == 4)
     c_msgnext("\\Ed* Dad picking me up and carrying me away./%");
     c_talk();
     c_wait_box(2);
-    c_sel(no);
-    c_sprite(spr_noelle_sit_look_down_unhappy);
-    c_waittalk();
+    c_sprite(spr_noelle_sit_look_down_eyes_closed);
+    c_wait_talk();
     
     c_wait(15);
     c_sel(no);
-    c_sprite(spr_noelle_sit_look_down_eyes_closed);
+    c_sprite(spr_noelle_sit_look_down_unhappy);
     c_wait(50);
     
     c_speaker("noelle");
@@ -170,14 +205,15 @@ if (con == 4)
 
     c_speaker("noelle");
     c_sel(no);
+    // lean looks forward, lean_look looks top left
     c_sprite(spr_noelle_sit_lean_neutral);
     c_msgset(0, "\\E2* ...huh?/");
-    c_msgnext("\\ED* You want to..^2. show me something?/"); // lean left look at cam
+    c_msgnext("\\ED* You want to..^2. show me something?/");
     c_msgnext("\\E3* It's not gonna be some weird bug again^1, is it?/");
     // deep fanon lore
     c_msgnext("\\Eh* Like that time you brought me a dead centipede.../");
-    c_msgnext("\\Eg* Well, I guess... you THOUGHT it was dead./");
-    c_msgnext("\\Ei* Because then it crawled up my arm and into my hair!/");
+    c_msgnext("\\Eg* Well^1, I guess..^3. you THOUGHT it was dead./");
+    c_msgnext("\\Ei* Because then it c-crawled up my arm and into my hair.../");
     c_msgnext("\\E8* You know^1, fool me thrice^1, shame on me^1, but fool me quice-/%");
     c_talk();
     // c_wait_box(1);
@@ -199,7 +235,7 @@ if (con == 4)
     // pause kris talk
     c_wait(15);
     c_sel(no);
-    c_sprite(spr_noelle_sit_lean_neutral);
+    c_sprite(spr_noelle_sit_lean_old); // lean_neutral but smiling
     c_wait(55);
     c_sprite(spr_noelle_sit_laugh);
     c_imagespeed(0.20); // 6fps
@@ -295,7 +331,6 @@ if (con == 4)
     c_imagespeed(0);
     c_sprite(spr_noelle_sit_awkward);
     
-    var weird_sprite_offset = 5; // some noe sprites have weird offsets
     c_wait_box(2);
     c_sel(hrt);
     c_stickto_stop(); // stickto keeps its relative offsets so need to do it manually
@@ -448,7 +483,7 @@ if (con == 4)
 
     c_speaker("noelle");
     c_fefc(0, 0);
-    c_msgset(0, "* Recently^1, I keep catching myself on the same thought.../");
+    c_msgset(0, "* Recently^1, I keep catching myself thinking.../");
     c_msgnext("* 'I wonder if they think about it^1, sometimes^1, too.'/");
     c_msgnext("* Kris^1, I..^4. All this time^1, I could never really say.../%");
     c_talk();
