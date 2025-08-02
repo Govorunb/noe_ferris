@@ -84,18 +84,19 @@ if (con == 1)
     c_fadein(30);
     c_wait(30);
     
-    weird_sprite_offset = 5; // some noe sprites have weird offsets
-    // TODO: there's some weird 1-pixel y-offset on some sprites too...
+    noe_spr_offset_x = 5; // some noe sprites have weird x-offsets
+    noe_spr_offset2_y = -1; // and some others have a y-offset...
     c_sprite(spr_noelle_sit_neutral);
     c_wait(65);
     c_sprite(spr_noelle_sit_expressions);
     c_imageindex(1);
-    c_addxy(weird_sprite_offset, 0);
+    c_addxy(noe_spr_offset_x, 0);
     c_wait(45);
     
     c_sel(no);
-    c_addxy(-weird_sprite_offset, 0);
     c_sprite(spr_noelle_sit_look_down_unhappy);
+    c_addxy(-noe_spr_offset_x, 0);
+    c_addxy(0, -noe_spr_offset2_y);
     c_imageindex(0);
     
     c_mus2("initloop", "noelle_distant.ogg", 0);
@@ -112,6 +113,7 @@ if (con == 1)
     c_wait(45);
     c_sel(no);
     c_sprite(spr_noelle_sit_closed_eyes_side_b);
+    c_addxy(0, noe_spr_offset2_y);
     
     c_msgset(0, "\\Eb* Kris..^3. Hey^1, Kris?/");
     c_msgnext("\\Ea* (It was just like this...)/");
@@ -160,6 +162,7 @@ if (con == 4)
     c_talk();
     c_wait_box(2);
     c_sprite(spr_noelle_sit_look_down_eyes_closed);
+    c_addxy(0, -noe_spr_offset2_y);
     c_wait_talk();
     
     c_wait(15);
@@ -188,6 +191,7 @@ if (con == 4)
     
     c_sel(no);
     c_sprite(spr_noelle_sit_closed_eyes_side_b);
+    c_addxy(0, noe_spr_offset2_y);
     c_speaker("noelle");
     c_msgset(0, "\\Em* .../");
     c_msgnext("\\EW* Kris..^2. Do you.../%");
@@ -207,6 +211,7 @@ if (con == 4)
     c_sel(no);
     // lean looks forward, lean_look looks top left
     c_sprite(spr_noelle_sit_lean_neutral);
+    c_addxy(0, -noe_spr_offset2_y);
     c_msgset(0, "\\E2* ...huh?/");
     c_msgnext("\\ED* You want to..^2. show me something?/");
     c_msgnext("\\E3* It's not gonna be some weird bug again^1, is it?/");
@@ -221,11 +226,13 @@ if (con == 4)
     // c_sprite(spr_noelle_sit_lean_normal);
     c_wait_box(2);
     c_sprite(spr_noelle_sit_cover_mouth_look);
+    c_addxy(0, noe_spr_offset2_y);
     // c_sprite(spr_noelle_sit_lean_normal);
     // c_sprite(spr_noelle_sit_cover_mouth_steal_car); // STEAL CAR????
     c_wait_box(3);
     // c_sprite(spr_noelle_sit_lean_look);
     c_sprite(spr_noelle_sit_cover_mouth_steal_car_eyes_closed);
+    c_addxy(0, -noe_spr_offset2_y);
     c_wait_box(4);
     c_sprite(spr_noelle_sit_cover_mouth_steal_car);
     c_wait_box(6);
@@ -238,6 +245,7 @@ if (con == 4)
     c_sprite(spr_noelle_sit_lean_old); // lean_neutral but smiling
     c_wait(55);
     c_sprite(spr_noelle_sit_laugh);
+    c_addxy(0, noe_spr_offset2_y);
     c_imagespeed(0.20); // 6fps
     c_wait(15); // = 3 frames (1.5 laugh loops)
 
@@ -338,7 +346,7 @@ if (con == 4)
     c_sel(no);
     c_sprite(spr_noelle_sit_expressions);
     c_imageindex(6);
-    c_addxy(weird_sprite_offset, 0);
+    c_addxy(noe_spr_offset_x, 0);
     
     c_wait_box(3);
     c_sel(no);
@@ -350,7 +358,8 @@ if (con == 4)
     c_wait(20);
     c_sel(no);
     c_sprite(spr_noelle_sit_look_down_eyes_closed);
-    c_addxy(-weird_sprite_offset, 0);
+    c_addxy(-noe_spr_offset_x, 0);
+    c_addxy(0, -noe_spr_offset2_y);
     c_imageindex(0);
     
     c_speaker("noelle");
@@ -360,6 +369,7 @@ if (con == 4)
     c_wait_box(1);
     c_sel(no);
     c_sprite(spr_noelle_sit_cover_mouth_sweat);
+    c_addxy(0, noe_spr_offset2_y);
     c_waittalk();
 
     // kris start scooting away
@@ -370,6 +380,7 @@ if (con == 4)
     
     c_sel(no);
     c_sprite(spr_noelle_sit_goofy_what);
+    // c_addxy(0, -noe_spr_offset2_y); // here the sprite going up/down a pixel actually fits so it's fine
     c_speaker("noelle");
     c_msgset(0, "\\EJ* Huh? H-hey!/%");
     c_talk();
@@ -381,7 +392,8 @@ if (con == 4)
     c_sel(no);
     c_sprite(spr_noelle_sit_strangleface_forward);
     c_imageindex(0);
-    c_addxy(weird_sprite_offset, 0);
+    c_addxy(noe_spr_offset_x, 0);
+    // c_addxy(0, noe_spr_offset2_y); // see above
     c_msgset(0, "\\EH* C'mon^1, what's with you...?/%");
     c_talk();
     c_wait(25);
@@ -396,7 +408,7 @@ if (con == 4)
     // noe look cam
     c_sel(no);
     c_sprite(spr_noelle_sit_laugh_goofy_left);
-    c_addxy(-weird_sprite_offset, 0);
+    c_addxy(-noe_spr_offset_x, 0);
     c_msgset(0, "\\EI* (..^2. Is this a human thing?????)/%");
     c_talk();
     c_waittalk();
@@ -404,6 +416,7 @@ if (con == 4)
     c_wait(20);
     c_sel(no);
     c_sprite(spr_noelle_sit_look_down_unhappy);
+    c_addxy(0, -noe_spr_offset2_y);
     c_wait(40);
 
     c_msgset(0, "\\Ed* (Sigh...)/%");
