@@ -183,8 +183,12 @@ if (con == 4)
     c_msgnext("\\Ec* Ever since then^1, rarely I feel like.../");
     c_msgnext("\\Ee* Like I could never fully understand you^1, no matter how hard I tried./");
     c_msgnext("\\Ea* But^1, then life just keeps on going and.../");
+    // close eyes
     c_msgnext("\\Ed* The feeling fades away again./%");
-    c_talk_wait();
+    c_talk();
+    c_wait_box(5);
+    c_sprite(spr_noelle_sit_look_down_eyes_closed);
+    c_wait_talk();
 
     c_wait(66);
 
@@ -557,7 +561,7 @@ if (con == 4)
     c_talk();
     c_waittalk();
     
-    c_mus2("volume", 0, 60);
+    c_mus2("volume", 0, 90);
     // c_sel(hrt);
     // c_var_lerp("image_alpha", 1, 0, 120);
     c_wait(150);
