@@ -3,7 +3,7 @@ if (con == 1)
     /*
     i stood up and saw. saw through the outlines.
     saw the reflections bouncing in, around, back out.
-    the twilight, marred, scarred.
+    the dream's twilight, marred, scarred.
 
     on a more serious note: dev commentary i guess
     i was listening to one of Andrew Cunningham's ELEKTIONTRÜCKUNG streams to fall asleep, and this scene came to me in a half-dream.
@@ -15,17 +15,18 @@ if (con == 1)
     cutscene_master = scr_cutscene_make();
     scr_maincharacters_actors();
     global.interact = 1;
+
+    noe_initial_pos = { x:183, y: 85 };
+    krs_initial_pos = { x:130, y: 93 };
+    hrt_initial_pos = { x:195, y:115 };
     
     no = ++actor_count;
-    no_actor = instance_create(noelle_npc.x, noelle_npc.y, obj_actor);
+    no_actor = instance_create(noe_initial_pos.x, noe_initial_pos.y, obj_actor);
     scr_actor_setup(no, no_actor, "noelle");
-    no_actor.sprite_index = noelle_npc.sprite_index;
     
     hrt = ++actor_count;
-    hrt_actor = instance_create(200, 115, obj_actor);
+    hrt_actor = instance_create(hrt_initial_pos.x, hrt_initial_pos.y, obj_actor);
     scr_actor_setup(hrt, hrt_actor, "heart");
-    hrt_actor.sprite_index = spr_heart;
-    hrt_actor.depth = no_actor.depth - 1;
     hrt_actor.image_xscale = 0.4;
     hrt_actor.image_yscale = 0.4;
 
@@ -46,14 +47,16 @@ if (con == 1)
     c_mus2("loopsfxpitchtime", 0.7, 1);
     c_mus2("loopsfxvolume", 0, 0);
     c_mus2("loopsfxvolume", 0.4, 30);
+
+    c_sel(no);
+    c_autowalk(0);
+    c_sprite(spr_noelle_sit);
+
     c_sel(kr);
     c_autowalk(0);
-    c_setxy(kris_marker.x, kris_marker.y);
     c_sprite(spr_kris_sit);
+    c_setxy(krs_initial_pos.x, krs_initial_pos.y);
     c_flip("x"); // start out facing away from noelle
-
-    c_var_instance(noelle_npc, "visible", 0);
-    c_var_instance(kris_marker, "visible", 0);
     
     c_sel(hrt);
     c_autowalk(0);
@@ -130,7 +133,7 @@ if (con == 2 && customcon == 1)
     customcon = 0;
     c_waitcustom_end();
     // i hate that this requires editing scr_text
-    // but i found no other easy way to sequence in a choicer that actually worked
+    // but this is the easiest way to sequence in a choicer (that actually works)
     c_msc(10001);
     c_talk_wait();
 }
@@ -379,8 +382,7 @@ if (con == 4)
 
     // kris start scooting away
     c_sel(kr);
-    // can't use current kr_actor.x since it unflips above
-    c_var_lerp("x", kris_marker.x + kris_scoot, kris_marker.x, 120, 1, "in");
+    c_var_lerp("x", krs_initial_pos.x + kris_scoot, krs_initial_pos.x, 120, 1, "in");
     c_wait(30);
     
     c_sel(no);
@@ -567,12 +569,9 @@ if (con == 4)
     c_wait(150);
     c_mus("free");
     
-    var scoot_nudge = -5; // sprite has offset
-    // it also has the 1-pixel y-offset but honestly it looks fine
-    
     c_sel(no);
     c_sprite(spr_noelle_sit_nudge);
-    c_addxy(-scoot_nudge, 0);
+    c_addxy(noe_spr_offset_x, 0);
     c_imageindex(5);
     c_sel(hrt);
     c_addxy(0, -heart_move_hold);
@@ -596,7 +595,8 @@ if (con == 4)
     // c_addxy(-scoot_nudge, 0);
     c_sel(no);
     c_sprite(spr_noelle_sit_cover_mouth_steal_car_eyes_closed); // spr_girlwhostealsyourcarwhenyouknowherfortoolong
-    c_addxy(scoot_nudge, 0);
+    c_addxy(-noe_spr_offset_x, 0);
+    // it also has the 1-pixel y-offset but honestly it looks fine
     c_speaker("noelle");
     c_msgset(0, "\\E5* Ahem./%");
     c_talk_wait();
@@ -607,10 +607,10 @@ if (con == 4)
     c_sprite(spr_noelle_sit_laugh);
     c_addxy(0, noe_spr_offset2_y);
     
-    var noe_give_heart = { x: -15, y: -5 };
+    var noe_give_heart = { x: -14, y: -5 };
     var noe_give_heart_2 = { x: -2, y: -1 };
     var noe_give_to_ganbatte_hold_heart_moves_this_much = { x: 5, y: -4 };
-    c_msgset(0, "\\E9* Sorry, Kris^1, I talked your ear off, didn't I?/");
+    c_msgset(0, "\\E9* Sorry Kris^2, I talked your ear off, didn't I?/");
     c_msgnext("\\E4* Here^1, you can have this back./%");
     c_talk();
     c_wait_box(1);
@@ -620,7 +620,7 @@ if (con == 4)
     c_sel(hrt);
     c_addxy(noe_give_heart.x, noe_give_heart.y);
     // c_depthobject(no_actor, 1); // behind her hand
-    c_depthobject(no_actor, -1); // it looked worse :(
+    c_depthobject(no_actor, -10); // it looked worse :(
     c_wait_talk();
     
     c_sel(kr);
