@@ -1,17 +1,6 @@
 if (con == 1)
 {
-    /*
-    i stood up and saw. saw through the outlines.
-    saw the reflections bouncing in, around, back out.
-    the dream's twilight, marred, scarred.
-
-    on a more serious note: dev commentary i guess
-    i was listening to one of Andrew Cunningham's ELEKTIONTRÜCKUNG streams to fall asleep, and this scene came to me in a half-dream.
-    i got up, but it didn't leave my head as it was supposed to.
-    i couldn't stop thinking about it, so i forcefully evicted it onto this canvas.
-    
-    the cutscene system is cool so this was fun.
-    */
+    // the cutscene system is very cool
     cutscene_master = scr_cutscene_make();
     scr_maincharacters_actors();
     global.interact = 1;
