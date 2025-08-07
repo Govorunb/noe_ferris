@@ -21,31 +21,41 @@ The cutscene system is cool so this was fun.
 You may notice the background art sucks - that's because I suck at art. Basically, every sprite that doesn't suck comes from the game itself (some of them unused).
 
 ## Play it yourself
-I'll make an [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool) script to make this easier soon. <sub><sup>(last updated: 11 years ago)</sup></sub>
+You'll need to download [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool) to modify the game files.
 
-Manual installation:
+### Installation
 
 1. Get a save in Noelle's kitchen (for convenience)
 2. Go to the game's install directory (right-click the game in Steam and go to `Manage` -> `Browse local files`)
 3. Run UndertaleModTool and open `DELTARUNE/chapter4_windows/data.win` with it
 4. Back up your original `data.win` (copy it somewhere)
-5. Find and replace assets from this repo into the `data.win` (see [How to replace assets](#how-to-replace-assets) below):
+5. Install the mod (see below)
+6. Save the `data.win` with `Ctrl+S` - double check you're overwriting `chapter4_windows/data.win`
+7. Launch the game and go into Noelle's room. When the cutscene ends, you'll be teleported back to the kitchen.
+    - Make sure you *don't* do any funny things like entering the room from the vent, because I have no idea what will happen (you will probably crash)
+8. To uninstall the mod, copy the original `data.win` back over the modified one.
+    - If you don't have a backup, you'll have to verify files on Steam.
+
+#### Automatic installation:
+
+Open the `Scripts` menu in UTMT, select `Run other script...`, and find `Install.csx` <sub><sup>(you did download the repo, right?)</sup></sub>
+
+![Screenshot showing the Scripts menu](img/utmt-scripts.png)
+
+#### Manual installation:
+
+1. Find and replace assets from this repo into the `data.win` (see [How to replace assets](#how-to-replace-assets) below):
 
 | New file | Type | Replaces |
 | -------- | ---- | -------- |
 | [`noe_ferris_Create_0.gml`](./noe_ferris_Create_0.gml) | Code   | `gml_Object_obj_ch4_PDC14A_Create_0` |
 | [`noe_ferris_Step_0.gml`](./noe_ferris_Step_0.gml)   | Code   | `gml_Object_obj_ch4_PDC14A_Step_0` |
 | [`art/bg_noellehouse_noelle.png`](./art/bg_noellehouse_noelle.png)          | Sprite | `bg_noellehouse_noelle` |
-| [`scr_text.gml`](./scr_text.gml)        | Code*  | Add it (**do not** replace!) to `gml_GlobalScript_scr_text` (see [`scr_text`](#scr_text) below) |
 
-6. After replacing assets, open `room_lw_noellehouse_noelle` in the Room section
-7. Delete the following (right-click to open the menu):
+2. After replacing assets, open `room_lw_noellehouse_noelle` in the Room section
+3. Delete the following (right-click to open the menu):
     - The layers `GIVE_DEPTH` and `TILES_Vents` (delete the layers themselves)
-    - Inside the `OBJECTS_MAIN` layer, `obj_homealone_vent_hidden` and `obj_homealone_vent_overlay`
-8. Save the `data.win` with `Ctrl+S`
-    - Before doing this, **make sure you backed up your original `data.win`**!
-9. Launch the game and go into Noelle's room. When the cutscene ends, you'll be teleported back to the kitchen.
-    - Make sure you *don't* do any funny things like entering the room from the vent, because I have no idea what will happen (you will probably crash)
+    - Inside the `OBJECTS_MAIN` layer, `obj_homealone_vent_hidden`, `obj_homealone_vent_overlay`, and `obj_noellehouse_noelle`
 
 ## How to replace assets
 
@@ -55,47 +65,12 @@ Using `noe_ferris_Create_0.gml` as an example:
 2. Copy all the code in the new file (select all with `Ctrl+A` and copy with `Ctrl+C`)
 3. Locate the code entry that should be replaced
     - Use the search bar in the top left to find "PDC14A" in the `Code` section
-    ![screenshot of UndertaleModTool showing how to search](img/utmt-search.png)
-    - Double-click to open the code entry (make sure it's `Create_0` and not `Step_0`); you should see decompiled code for the script.
+    <br/>![screenshot of UndertaleModTool showing how to search](img/utmt-search.png)
+    - Double-click to open the code entry (make sure it's `Create_0` and not `Step_0`)
+    - You should see decompiled code for the script.
 4. Now, just select all code in the script with `Ctrl+A` and paste with `Ctrl+V`.
 
 Done!
-
-### scr_text
-For `scr_text`, instead of replacing its code you need to **add** some code at the end.
-1. Open the script as normal
-2. Scroll to the bottom; you should see this chunk of code:
-
-```gml
-        
-        default:
-            break;
-    }
-}
-```
-3. Add the code from the new file above this chunk. For example, this is how it should look now:
-```gml
-        case 10001:
-            global.choicemsg[0] = "#I do";
-            global.choicemsg[1] = "#I don't";
-            global.choicemsg[2] = "";
-            global.choicemsg[3] = "";
-            scr_speaker("no_name");
-            msgset(0, "\\C2 ");
-            break;
-        
-        case 10002:
-            with (obj_ch4_PDC14A_noelle)
-                con = 4;
-            
-            scr_speaker("no_name");
-            msgset(0, "%%");
-        
-        default:
-            break;
-    }
-}
-```
 
 ### Sprite
 1. Locate the sprite
