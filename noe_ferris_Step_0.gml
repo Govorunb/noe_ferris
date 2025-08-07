@@ -111,25 +111,26 @@ if (con == 1)
     c_msgnext("\\Ea* (It was just like this...)/");
     c_msgnext("\\Ec* That time^1, on the ferris wheel.../");
     c_msgnext("\\Eb* Do you..^2. remember?/%");
+    c_talk_wait();
+
+    // wishlist: c_choice(["#Yes", "#No", "Maybe", "I don't know"]) that does this
+    c_customfunc(function() {
+        global.msc = -99;
+        global.choice = -1;
+        // not sure if having <4 options OoBs any subsequent code so just padded to 4
+        global.choicemsg = ["#I do", "#I don't", "", ""];
+    });
+    c_speaker("no_name");
+    c_msgset(0, "\\C2 ");
     c_talk();
-    // c_wait_box(2);
-    c_waittalk();
     con = 2;
     c_waitcustom();
 }
-if (con == 2 && customcon == 1)
-{
-    customcon = 0;
-    c_waitcustom_end();
-    // i hate that this requires editing scr_text
-    // but this is the easiest way to sequence in a choicer (that actually works)
-    c_msc(10001);
-    c_talk_wait();
-}
 
-if (con == 4)
+if (con == 2 && customcon == 1 && global.choice != -1)
 {
     customcon = 0;
+    k_d(3);
     c_waitcustom_end();
     
     c_sel(no);
