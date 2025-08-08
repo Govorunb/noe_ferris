@@ -28,6 +28,7 @@ You'll need to download [UndertaleModTool](https://github.com/UnderminersTeam/Un
 1. Get a save in Noelle's kitchen (for convenience)
 2. Go to the game's install directory (right-click the game in Steam and go to `Manage` -> `Browse local files`)
 3. Run UndertaleModTool and open `DELTARUNE/chapter4_windows/data.win` with it
+    - You may see a file called just `data` instead of `data.win` - if it's shown in the "Open File" dialog in UTMT (`Ctrl+O`) it *is* the right file (you just have your file extensions hidden)
 4. Back up your original `data.win` (copy it somewhere)
 5. Install the mod (see below)
 6. Save the `data.win` with `Ctrl+S` - double check you're overwriting `chapter4_windows/data.win`
